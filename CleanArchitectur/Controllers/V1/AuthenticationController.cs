@@ -72,13 +72,13 @@ public class AuthenticationController : ControllerBase
                         var userAgent = Request.HttpContext.Request.Headers.UserAgent.ToString();
 
                         var claimForToken = new List<Claim>
-                    {
-                        new("Id", userInfo.Data!.Id.ToString()),
-                        new("IpAddress", Request.HttpContext.Connection.RemoteIpAddress?.ToString() ?? "0.0.0.0"),
-                        new("ComputerName", computerName),
-                        new("UserAgent", userAgent),
-                        new("IsActive", userInfo.Data!.IsActive.ToString()),
-                    };
+                        {
+                            new("Id", userInfo.Data!.Id.ToString()),
+                            new("IpAddress", Request.HttpContext.Connection.RemoteIpAddress?.ToString() ?? "0.0.0.0"),
+                            new("ComputerName", computerName),
+                            new("UserAgent", userAgent),
+                            new("IsActive", userInfo.Data!.IsActive.ToString()),
+                        };
 
                         var now = DateTime.Now;
 
