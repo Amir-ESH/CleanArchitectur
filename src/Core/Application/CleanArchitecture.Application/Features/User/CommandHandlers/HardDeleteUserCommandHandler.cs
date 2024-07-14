@@ -30,7 +30,7 @@ public class HardDeleteUserCommandHandler : IRequestHandler<HardDeleteUserComman
 
         try
         {
-            if (await _userRepository.DeleteAsync(cancellationToken, new Domain.Entities.User {Id = request.Id}))
+            if (await _userRepository.DeleteAsync(cancellationToken, new Domain.Entities.Users.User {Id = request.Id}))
             {
                 if (await _userRoleRepository.DeleteAsync(cancellationToken, ur => ur.UserId == request.Id))
                 {

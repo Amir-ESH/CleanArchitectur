@@ -4,6 +4,7 @@ using CleanArchitecture.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -30,6 +31,19 @@ public static class DependencyInjection
                                                                          });
                                                 });
 
+        services.AddDbContext<DataCacheContext>(
+                                                options =>
+                                                {
+                                                    options.UseSqlServer(GetCacheConnectionString(configuration),
+                                                                         sqlServerOptionsAction: sqlOptions =>
+                                                                         {
+                                                                             sqlOptions.EnableRetryOnFailure(
+                                                                              maxRetryCount: Convert.ToInt32(maxRetryCount),
+                                                                              maxRetryDelay: TimeSpan.FromSeconds(Convert.ToInt32(maxRetryDelay)),
+                                                                              errorNumbersToAdd: null);
+                                                                         });
+                                                });
+
         services.AddRepositoryLifeTime();
         
         //services.AddScoped<ApplicationDbContextInitialiser>();
@@ -41,7 +55,7 @@ public static class DependencyInjection
 
         return services;
     }
-    
+
     public static void AddInfrastructurePipeline(this IApplicationBuilder app)
     {
         app.ApplicationDbContextInitialiserConfig();
@@ -53,6 +67,7 @@ public static class DependencyInjection
         services.AddSingleton(TimeProvider.System);
 
         services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
+        services.AddScoped(typeof(ICacheRepository<,>), typeof(CacheRepository<,>));
 
         return services;
     }
@@ -67,7 +82,7 @@ public static class DependencyInjection
         var dataSource = configuration.GetSection("Database:ConnectionString:DataSource").Value ?? ".\\MSSQLSERVER2017";
         var initialCatalog = configuration.GetSection("Database:ConnectionString:InitialCatalog").Value
                           ?? "CleanArchitecture";
-        var userId = configuration.GetSection("Database:ConnectionString:UserId").Value ?? "sa";
+        var userId = configuration.GetSection("Database:ConnectionString:UserId").Value ?? "sa_test";
         var password = configuration.GetSection("Database:ConnectionString:Password").Value ?? "P4ssw0rd!";
         var integratedSecurity =
             configuration.GetSection("Database:ConnectionString:IntegratedSecurity").Value ?? "True";
@@ -78,6 +93,34 @@ public static class DependencyInjection
             configuration.GetSection("Database:ConnectionString:Trusted_Connection").Value ?? "False";
         var multipleActiveResultSets =
             configuration.GetSection("Database:ConnectionString:MultipleActiveResultSets").Value ?? "True";
+
+        return $"Data Source = {dataSource}; Initial Catalog = {initialCatalog}; User Id = {userId}; " +
+            $"Password={password}; Integrated Security = {integratedSecurity}; Encrypt = {encrypt}; " +
+            $"TrustServerCertificate = {trustServerCertificate}; Trusted_Connection = {trustedConnection}; " +
+            $"MultipleActiveResultSets = {multipleActiveResultSets};";
+    }
+
+    /// <summary>
+    /// Get Cache Connection String Infos from appsettings.json
+    /// </summary>
+    /// <param name="configuration">IConfiguration Service</param>
+    /// <returns></returns>
+    private static string GetCacheConnectionString(IConfiguration configuration)
+    {
+        var dataSource = configuration.GetSection("Database:CacheConnectionString:DataSource").Value ?? ".\\MSSQLSERVER2017";
+        var initialCatalog = configuration.GetSection("Database:CacheConnectionString:InitialCatalog").Value
+                          ?? "CacheCleanArchitecture";
+        var userId = configuration.GetSection("Database:CacheConnectionString:UserId").Value ?? "sa_test";
+        var password = configuration.GetSection("Database:CacheConnectionString:Password").Value ?? "P4ssw0rd!";
+        var integratedSecurity =
+            configuration.GetSection("Database:CacheConnectionString:IntegratedSecurity").Value ?? "True";
+        var encrypt = configuration.GetSection("Database:CacheConnectionString:Encrypt").Value ?? "True";
+        var trustServerCertificate =
+            configuration.GetSection("Database:CacheConnectionString:TrustServerCertificate").Value ?? "True";
+        var trustedConnection =
+            configuration.GetSection("Database:CacheConnectionString:Trusted_Connection").Value ?? "False";
+        var multipleActiveResultSets =
+            configuration.GetSection("Database:CacheConnectionString:MultipleActiveResultSets").Value ?? "True";
 
         return $"Data Source = {dataSource}; Initial Catalog = {initialCatalog}; User Id = {userId}; " +
             $"Password={password}; Integrated Security = {integratedSecurity}; Encrypt = {encrypt}; " +

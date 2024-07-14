@@ -20,6 +20,6 @@ public class FamilyRelationshipConfiguration : IEntityTypeConfiguration<FamilyRe
 {
     public void Configure(EntityTypeBuilder<FamilyRelationship> builder)
     {
-        builder.Property(e => e.Relationship).HasDefaultValue(1);
+        builder.Property(e => e.Relationship).HasDefaultValue(RelationshipType.Father);
     }
 }

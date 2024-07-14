@@ -42,7 +42,7 @@ public class PhoneNumberConfiguration : IEntityTypeConfiguration<PhoneNumber>
         builder.Property(e => e.SendSms).HasDefaultValue(false);
         builder.Property(e => e.IsDefault).HasDefaultValue(false);
 
-        builder.Property(e => e.Type).HasDefaultValue(1);
+        builder.Property(e => e.Type).HasDefaultValue(PhoneType.Mobile);
 
         builder.HasQueryFilter(e => !e.IsDeleted);
     }

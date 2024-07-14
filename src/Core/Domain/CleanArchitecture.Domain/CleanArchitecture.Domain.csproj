@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Folder Include="Entities\Banks\" />
+    <Folder Include="Entities\Products\" />
     <Folder Include="Enums\" />
   </ItemGroup>
 

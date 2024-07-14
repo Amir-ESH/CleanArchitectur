@@ -7,13 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Common\Behaviors\" />
     <Folder Include="Common\Exceptions\" />
     <Folder Include="Common\Helper\" />
     <Folder Include="Common\DTO\" />
-    <Folder Include="Common\Interfaces\" />
     <Folder Include="DTO\Controller\AuthenticationController\" />
+    <Folder Include="DTO\Product\" />
     <Folder Include="DTO\Role\" />
+    <Folder Include="Features\Product\CommandHandlers\" />
+    <Folder Include="Features\Product\Commands\" />
+    <Folder Include="Features\Product\QueryHandlers\" />
+    <Folder Include="Features\Product\Queries\" />
     <Folder Include="Features\Role\CommandHandlers\" />
     <Folder Include="Features\Role\Commands\" />
     <Folder Include="Features\Role\Queries\" />
