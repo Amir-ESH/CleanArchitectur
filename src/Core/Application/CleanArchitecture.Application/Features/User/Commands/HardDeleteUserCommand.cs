@@ -2,16 +2,16 @@
 
 namespace CleanArchitecture.Application.Features.User.Commands;
 
-public record SoftDeleteUserByIdRequest : IRequest<ResultDto<bool>>
+public class HardDeleteUserCommand : IRequest<ResultDto<bool>>
 {
     public Guid Id { get; set; }
 
-    public SoftDeleteUserByIdRequest(Guid id)
+    public HardDeleteUserCommand(Guid id)
     {
         Id = id;
     }
 
-    public SoftDeleteUserByIdRequest()
+    public HardDeleteUserCommand()
     {
         
     }

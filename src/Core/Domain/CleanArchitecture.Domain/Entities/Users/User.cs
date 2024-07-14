@@ -4,15 +4,10 @@ using CleanArchitecture.Domain.Commons;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 
-namespace CleanArchitecture.Domain.Entities;
+namespace CleanArchitecture.Domain.Entities.Users;
 
 public class User : BaseAuditableEntity<Guid>
 {
-    public User()
-    {
-        UserRoles = new List<UserRole>();
-    }
-
     [DisplayName("First Name")]
     [StringLength(40, ErrorMessage = "{0} can't be a more then {1} characters.")]
     public string FirstName { get; set; } = null!;
@@ -32,10 +27,12 @@ public class User : BaseAuditableEntity<Guid>
 
     [DisplayName("Private Key")]
     [StringLength(64, ErrorMessage = "{0} can't be a more then {1} characters.")]
+    [Unicode(false)]
     public string PrivateKey { get; set; } = null!;
 
     [DisplayName("Public Key")]
     [StringLength(64, ErrorMessage = "{0} can't be a more then {1} characters.")]
+    [Unicode(false)]
     public string PublicKey { get; set; } = null!;
 
     [DisplayName("Is Active?")]
@@ -43,7 +40,7 @@ public class User : BaseAuditableEntity<Guid>
 
     #region Navigational properties
 
-    public ICollection<UserRole> UserRoles { get; set; }
+    public ICollection<UserRole> UserRoles { get; set; } = default!;
 
     #endregion
 }
@@ -52,7 +49,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
-        builder.Property(e => e.Created).HasDefaultValueSql("SYSDATETIMEOFFSET()");
+        builder.Property(e => e.CreatedAt).HasDefaultValueSql("SYSDATETIMEOFFSET()");
         builder.Property(e => e.CreatedBy).HasDefaultValue("Created By System");
         builder.Property(e => e.IsDeleted).HasDefaultValue(false);
         builder.Property(e => e.IsActive).HasDefaultValue(false);

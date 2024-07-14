@@ -4,18 +4,18 @@ using CleanArchitecture.Application.Features.User.Commands;
 
 namespace CleanArchitecture.Application.Features.User.CommandHandlers;
 
-public class SoftDeleteUserByIdRequestHandler : IRequestHandler<SoftDeleteUserByIdRequest, ResultDto<bool>>
+public class SoftDeleteUserCommandHandler : IRequestHandler<SoftDeleteUserCommand, ResultDto<bool>>
 {
-    private readonly IRepository<Domain.Entities.User, Guid> _userRepository;
-    private readonly ILogger<SoftDeleteUserByIdRequestHandler> _logger;
+    private readonly IRepository<Domain.Entities.Users.User, Guid> _userRepository;
+    private readonly ILogger<SoftDeleteUserCommandHandler> _logger;
 
-    public SoftDeleteUserByIdRequestHandler(IRepository<Domain.Entities.User, Guid> userRepository, ILogger<SoftDeleteUserByIdRequestHandler> logger)
+    public SoftDeleteUserCommandHandler(IRepository<Domain.Entities.Users.User, Guid> userRepository, ILogger<SoftDeleteUserCommandHandler> logger)
     {
         _userRepository = userRepository;
         _logger = logger;
     }
 
-    public async Task<ResultDto<bool>> Handle(SoftDeleteUserByIdRequest request, CancellationToken cancellationToken)
+    public async Task<ResultDto<bool>> Handle(SoftDeleteUserCommand request, CancellationToken cancellationToken)
     {
         var result = new ResultDto<bool>();
 

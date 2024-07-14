@@ -9,7 +9,7 @@ public abstract class BaseAuditableEntity<TKey> : BaseEntity<TKey>
     /// <summary>
     /// Created Date Time
     /// </summary>
-    public DateTimeOffset Created { get; set; }
+    public DateTimeOffset CreatedAt { get; set; }
 
     /// <summary>
     /// Entity Created By Who?
@@ -19,7 +19,7 @@ public abstract class BaseAuditableEntity<TKey> : BaseEntity<TKey>
     [Unicode(false)]
     public string? CreatedBy { get; set; }
 
-    public DateTimeOffset? LastModified { get; set; }
+    public DateTimeOffset? LastModifiedAt { get; set; }
 
     /// <summary>
     /// Entity Changed By Who?

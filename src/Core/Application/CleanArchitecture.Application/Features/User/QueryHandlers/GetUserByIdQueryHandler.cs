@@ -2,29 +2,28 @@
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.DTO.User;
 using CleanArchitecture.Application.Features.User.Queries;
-using Exception = System.Exception;
 
 namespace CleanArchitecture.Application.Features.User.QueryHandlers;
 
-public class GetUserByEmailAddressRequestHandler : IRequestHandler<GetUserByEmailAddressRequest, ResultDto<UserDto?>>
+public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, ResultDto<UserDto>>
 {
-    private readonly IRepository<Domain.Entities.User, Guid> _userRepository;
-    private readonly ILogger<GetUserByEmailAddressRequestHandler> _logger;
+    private readonly IRepository<Domain.Entities.Users.User, Guid> _userRepository;
+    private readonly ILogger<GetUserByIdQueryHandler> _logger;
 
-    public GetUserByEmailAddressRequestHandler(IRepository<Domain.Entities.User, Guid> userRepository,
-                                               ILogger<GetUserByEmailAddressRequestHandler> logger)
+    public GetUserByIdQueryHandler(IRepository<Domain.Entities.Users.User, Guid> userRepository,
+                                     ILogger<GetUserByIdQueryHandler> logger)
     {
         _userRepository = userRepository;
         _logger = logger;
     }
 
-    public async Task<ResultDto<UserDto?>> Handle(GetUserByEmailAddressRequest request, CancellationToken cancellationToken)
+    public async Task<ResultDto<UserDto>> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
     {
-        var result = new ResultDto<UserDto?>();
+        var result = new ResultDto<UserDto>();
 
         try
         {
-            if (await _userRepository.GetAsync(cancellationToken, u => u.Email == request.Email) is { } user)
+            if (await _userRepository.GetAsync(cancellationToken, u => u.Id == request.Id) is { } user)
             {
                 result.IsSuccess = true;
                 result.StatusCode = 200;
@@ -36,7 +35,7 @@ public class GetUserByEmailAddressRequestHandler : IRequestHandler<GetUserByEmai
                 result.IsSuccess = false;
                 result.StatusCode = 404;
                 result.Message = "Can't find your requested data.";
-                result.AddError("1404", "Can't find your requested User Information.", "Email");
+                result.AddError("1404", "Can't find your requested User Information.");
                 result.SetTransactionDetails(Guid.NewGuid().ToString().Replace("-", ""), "Failed");
             }
         }
@@ -52,6 +51,6 @@ public class GetUserByEmailAddressRequestHandler : IRequestHandler<GetUserByEmai
             result.SetTransactionDetails(Guid.NewGuid().ToString().Replace("-", ""), "Failed");
         }
 
-        return result;
+        return  result;
     }
 }

@@ -3,21 +3,22 @@ using CleanArchitecture.Application.Common.Helper;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.DTO.User;
 using CleanArchitecture.Application.Features.User.Commands;
-using CleanArchitecture.Domain.Entities;
+using CleanArchitecture.Domain.Entities.Roles;
+using CleanArchitecture.Domain.Entities.Users;
 
 namespace CleanArchitecture.Application.Features.User.CommandHandlers;
 
-public class UpdateUserRequestHandler : IRequestHandler<UpdateUserRequest, ResultDto<UserDto>>
+public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, ResultDto<UserDto>>
 {
-    private readonly IRepository<Domain.Entities.User, Guid> _userRepository;
+    private readonly IRepository<Domain.Entities.Users.User, Guid> _userRepository;
     private readonly IRepository<Role, int> _roleRepository;
     private readonly IRepository<UserRole, Guid> _userRoleRepository;
-    private readonly ILogger<UpdateUserRequestHandler> _logger;
+    private readonly ILogger<UpdateUserCommandHandler> _logger;
 
-    public UpdateUserRequestHandler(IRepository<Domain.Entities.User, Guid> userRepository,
+    public UpdateUserCommandHandler(IRepository<Domain.Entities.Users.User, Guid> userRepository,
                                     IRepository<Role, int> roleRepository,
                                     IRepository<UserRole, Guid> userRoleRepository,
-                                    ILogger<UpdateUserRequestHandler> logger)
+                                    ILogger<UpdateUserCommandHandler> logger)
     {
         _userRepository = userRepository;
         _roleRepository = roleRepository;
@@ -25,7 +26,7 @@ public class UpdateUserRequestHandler : IRequestHandler<UpdateUserRequest, Resul
         _logger = logger;
     }
 
-    public async Task<ResultDto<UserDto>> Handle(UpdateUserRequest request, CancellationToken cancellationToken)
+    public async Task<ResultDto<UserDto>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
     {
         var result = new ResultDto<UserDto>();
 

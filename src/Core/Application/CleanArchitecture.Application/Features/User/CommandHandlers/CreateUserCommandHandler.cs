@@ -3,21 +3,22 @@ using CleanArchitecture.Application.Common.Helper;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.DTO.User;
 using CleanArchitecture.Application.Features.User.Commands;
-using CleanArchitecture.Domain.Entities;
+using CleanArchitecture.Domain.Entities.Roles;
+using CleanArchitecture.Domain.Entities.Users;
 
 namespace CleanArchitecture.Application.Features.User.CommandHandlers;
 
-public class AddUserRequestHandler : IRequestHandler<AddUserRequest, ResultDto<UserDto>>
+public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, ResultDto<UserDto>>
 {
-    private readonly IRepository<Domain.Entities.User, Guid> _userRepository;
+    private readonly IRepository<Domain.Entities.Users.User, Guid> _userRepository;
     private readonly IRepository<Role, int> _roleRepository;
     private readonly IRepository<UserRole, Guid> _userRoleRepository;
 
-    private readonly ILogger<AddUserRequestHandler> _logger;
+    private readonly ILogger<CreateUserCommandHandler> _logger;
 
-    public AddUserRequestHandler(IRepository<Domain.Entities.User, Guid> userRepository,
+    public CreateUserCommandHandler(IRepository<Domain.Entities.Users.User, Guid> userRepository,
                                  IRepository<Role, int> roleRepository, IRepository<UserRole, Guid> userRoleRepository,
-                                 ILogger<AddUserRequestHandler> logger)
+                                 ILogger<CreateUserCommandHandler> logger)
     {
         _userRepository = userRepository;
         _roleRepository = roleRepository;
@@ -25,7 +26,7 @@ public class AddUserRequestHandler : IRequestHandler<AddUserRequest, ResultDto<U
         _logger = logger;
     }
 
-    public async Task<ResultDto<UserDto>> Handle(AddUserRequest request, CancellationToken cancellationToken)
+    public async Task<ResultDto<UserDto>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
         var result = new ResultDto<UserDto>();
 
@@ -86,9 +87,9 @@ public class AddUserRequestHandler : IRequestHandler<AddUserRequest, ResultDto<U
         return result;
     }
 
-    private Domain.Entities.User InitAddUserRequest(AddUserRequest request)
+    private Domain.Entities.Users.User InitAddUserRequest(CreateUserCommand request)
     {
-        var addRequest = request.Adapt<Domain.Entities.User>();
+        var addRequest = request.Adapt<Domain.Entities.Users.User>();
         addRequest.PrivateKey = Guid.NewGuid().ToString().Replace("-", "") + DateTimeOffset.UtcNow.Ticks;
         addRequest.PublicKey = PasswordHelper.EncodePassword(addRequest.PrivateKey);
         addRequest.Password =

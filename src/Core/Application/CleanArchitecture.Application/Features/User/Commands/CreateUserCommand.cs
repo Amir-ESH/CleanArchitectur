@@ -5,7 +5,7 @@ using System.ComponentModel;
 
 namespace CleanArchitecture.Application.Features.User.Commands;
 
-public class AddUserRequest
+public class CreateUserCommand
     : IRequest<ResultDto<UserDto>>
 {
     [DisplayName("First Name")]
@@ -36,7 +36,7 @@ public class AddUserRequest
     [DisplayName("User Roles")]
     public List<int> RoleIds { get; set; } = null!;
 
-    public AddUserRequest(string firstName, string lastName, string email/*, bool isActive*/, string password,
+    public CreateUserCommand(string firstName, string lastName, string email/*, bool isActive*/, string password,
                           string confirmPassword, List<int> roleIds)
     {
         FirstName = firstName;
@@ -48,7 +48,7 @@ public class AddUserRequest
         RoleIds = roleIds;
     }
 
-    public AddUserRequest()
+    public CreateUserCommand()
     {
         
     }

@@ -5,7 +5,7 @@ using System.ComponentModel;
 
 namespace CleanArchitecture.Application.Features.User.Commands;
 
-public class UpdateUserRequest : IRequest<ResultDto<UserDto>>
+public class UpdateUserCommand : IRequest<ResultDto<UserDto>>
 {
     [DisplayName("User ID")]
     public Guid Id { get; set; }
@@ -37,7 +37,7 @@ public class UpdateUserRequest : IRequest<ResultDto<UserDto>>
 
     public List<int>? RoleIds { get; set; }
 
-    public UpdateUserRequest(Guid id, string? firstName, string? lastName, string? email, string? password,
+    public UpdateUserCommand(Guid id, string? firstName, string? lastName, string? email, string? password,
                              string? confirmPassword, bool? isActive, List<int>? roleIds)
     {
         Id = id;
@@ -50,7 +50,7 @@ public class UpdateUserRequest : IRequest<ResultDto<UserDto>>
         RoleIds = roleIds;
     }
 
-    public UpdateUserRequest()
+    public UpdateUserCommand()
     {
         
     }

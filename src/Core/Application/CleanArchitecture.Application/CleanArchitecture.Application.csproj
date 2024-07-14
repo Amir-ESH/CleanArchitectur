@@ -18,7 +18,6 @@
     <Folder Include="Features\Role\Commands\" />
     <Folder Include="Features\Role\Queries\" />
     <Folder Include="Features\Role\QueryHandlers\" />
-    <Folder Include="Features\User\QueryHandlers\" />
   </ItemGroup>
 
   <ItemGroup>

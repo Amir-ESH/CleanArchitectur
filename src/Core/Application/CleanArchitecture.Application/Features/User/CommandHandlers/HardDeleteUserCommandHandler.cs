@@ -1,21 +1,22 @@
 ﻿using CleanArchitecture.Application.Common.DTO;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Application.Features.User.Commands;
-using CleanArchitecture.Domain.Entities;
+using CleanArchitecture.Domain.Entities.Roles;
+using CleanArchitecture.Domain.Entities.Users;
 
 namespace CleanArchitecture.Application.Features.User.CommandHandlers;
 
-public class DeleteUserByIdRequestHandler : IRequestHandler<DeleteUserByIdRequest, ResultDto<bool>>
+public class HardDeleteUserCommandHandler : IRequestHandler<HardDeleteUserCommand, ResultDto<bool>>
 {
-    private readonly IRepository<Domain.Entities.User, Guid> _userRepository;
+    private readonly IRepository<Domain.Entities.Users.User, Guid> _userRepository;
     private readonly IRepository<Role, int> _roleRepository;
     private readonly IRepository<UserRole, Guid> _userRoleRepository;
-    private readonly ILogger<DeleteUserByIdRequestHandler> _logger;
+    private readonly ILogger<HardDeleteUserCommandHandler> _logger;
 
-    public DeleteUserByIdRequestHandler(IRepository<Domain.Entities.User, Guid> userRepository,
+    public HardDeleteUserCommandHandler(IRepository<Domain.Entities.Users.User, Guid> userRepository,
                                         IRepository<Role, int> roleRepository,
                                         IRepository<UserRole, Guid> userRoleRepository,
-                                        ILogger<DeleteUserByIdRequestHandler> logger)
+                                        ILogger<HardDeleteUserCommandHandler> logger)
     {
         _userRepository = userRepository;
         _roleRepository = roleRepository;
@@ -23,7 +24,7 @@ public class DeleteUserByIdRequestHandler : IRequestHandler<DeleteUserByIdReques
         _logger = logger;
     }
 
-    public async Task<ResultDto<bool>> Handle(DeleteUserByIdRequest request, CancellationToken cancellationToken)
+    public async Task<ResultDto<bool>> Handle(HardDeleteUserCommand request, CancellationToken cancellationToken)
     {
         var result = new ResultDto<bool>();
 

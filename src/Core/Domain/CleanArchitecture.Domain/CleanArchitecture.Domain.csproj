@@ -19,4 +19,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Entities\Banks\" />
+    <Folder Include="Enums\" />
+  </ItemGroup>
+
 </Project>

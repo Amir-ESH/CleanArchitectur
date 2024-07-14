@@ -3,4 +3,4 @@ using CleanArchitecture.Application.DTO.User;
 
 namespace CleanArchitecture.Application.Features.User.Queries;
 
-public record GetAllUserRequest : IRequest<ResultDto<List<UserDto>>>;
+public record GetAllUserQuery : IRequest<ResultDto<List<UserDto>>>;

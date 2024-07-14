@@ -5,19 +5,19 @@ using CleanArchitecture.Application.Features.User.Queries;
 
 namespace CleanArchitecture.Application.Features.User.QueryHandlers;
 
-public class GetAllUserRequestHandler : IRequestHandler<GetAllUserRequest, ResultDto<List<UserDto>>>
+public class GetAllUserQueryHandler : IRequestHandler<GetAllUserQuery, ResultDto<List<UserDto>>>
 {
-    private readonly IRepository<Domain.Entities.User, Guid> _userRepository;
-    private readonly ILogger<GetAllUserRequestHandler> _logger;
+    private readonly IRepository<Domain.Entities.Users.User, Guid> _userRepository;
+    private readonly ILogger<GetAllUserQueryHandler> _logger;
 
-    public GetAllUserRequestHandler(IRepository<Domain.Entities.User, Guid> userRepository,
-                                    ILogger<GetAllUserRequestHandler> logger)
+    public GetAllUserQueryHandler(IRepository<Domain.Entities.Users.User, Guid> userRepository,
+                                    ILogger<GetAllUserQueryHandler> logger)
     {
         _userRepository = userRepository;
         _logger = logger;
     }
 
-    public async Task<ResultDto<List<UserDto>>> Handle(GetAllUserRequest request, CancellationToken cancellationToken)
+    public async Task<ResultDto<List<UserDto>>> Handle(GetAllUserQuery request, CancellationToken cancellationToken)
     {
         var result = new ResultDto<List<UserDto>>();
 
