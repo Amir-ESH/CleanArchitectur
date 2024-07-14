@@ -1,29 +1,27 @@
 ﻿using CleanArchitecture.Application.Common.DTO;
+using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Domain.Commons;
+using CleanArchitecture.Infrastructure.Data;
 using CleanArchitecture.Infrastructure.Utilities;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Frozen;
 using System.Linq.Expressions;
-using CleanArchitecture.Application.Common.Interfaces;
-using CleanArchitecture.Infrastructure.Data;
-
-// ReSharper disable MethodOverloadWithOptionalParameter
 
 namespace CleanArchitecture.Infrastructure.Repositories;
 
-public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
-    where TEntity : BaseEntity<TEntityKey>, IEntity, new()
+public class CacheRepository<TCacheEntity, TEntityKey> : ICacheRepository<TCacheEntity, TEntityKey>
+    where TCacheEntity : CacheBaseEntity<TEntityKey>, ICacheEntity, new()
 {
-    protected readonly DataContext DbContext;
-    private readonly DbSet<TEntity> _query;
-    public DbSet<TEntity> Entities { get; }
-    public virtual IQueryable<TEntity> Table => Entities;
+    protected readonly DataCacheContext DbContext;
+    private readonly DbSet<TCacheEntity> _query;
+    public DbSet<TCacheEntity> Entities { get; }
+    public virtual IQueryable<TCacheEntity> Table => Entities;
 
-    public Repository(DataContext dbContext)
+    public CacheRepository(DataCacheContext dbContext)
     {
         DbContext = dbContext;
-        Entities = DbContext.Set<TEntity>();
-        _query = DbContext.Set<TEntity>();
+        Entities = DbContext.Set<TCacheEntity>();
+        _query = DbContext.Set<TCacheEntity>();
     }
 
     #region Repositories
@@ -52,7 +50,7 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
     /// </summary>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public virtual async Task<IReadOnlyList<TEntity>?> GetAllAsync(CancellationToken cancellationToken)
+    public virtual async Task<IReadOnlyList<TCacheEntity>?> GetAllAsync(CancellationToken cancellationToken)
     {
         try
         {
@@ -66,7 +64,7 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
         }
     }
 
-    public async Task<ResultDto<IReadOnlyList<TEntity>?>> GetAllAsync(CancellationToken cancellationToken, int pageNumber = 1,
+    public async Task<ResultDto<IReadOnlyList<TCacheEntity>?>> GetAllAsync(CancellationToken cancellationToken, int pageNumber = 1,
                                                                 int pageSize = 10)
     {
         throw new NotImplementedException();
@@ -78,8 +76,8 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
     /// <param name="cancellationToken"></param>
     /// <param name="predicate"></param>
     /// <returns></returns>
-    public virtual async Task<IReadOnlyList<TEntity>?> GetAllAsync(CancellationToken cancellationToken,
-                                                             Expression<Func<TEntity, bool>> predicate)
+    public virtual async Task<IReadOnlyList<TCacheEntity>?> GetAllAsync(CancellationToken cancellationToken,
+                                                             Expression<Func<TCacheEntity, bool>> predicate)
     {
         try
         {
@@ -94,8 +92,8 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
         }
     }
 
-    public async Task<ResultDto<IReadOnlyList<TEntity>?>> GetAllAsync(CancellationToken cancellationToken,
-                                                                Expression<Func<TEntity, bool>> predicate, int pageNumber = 1,
+    public async Task<ResultDto<IReadOnlyList<TCacheEntity>?>> GetAllAsync(CancellationToken cancellationToken,
+                                                                Expression<Func<TCacheEntity, bool>> predicate, int pageNumber = 1,
                                                                 int pageSize = 10)
     {
         throw new NotImplementedException();
@@ -110,9 +108,9 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
     /// <param name="includeString"></param>
     /// <param name="disableTracking"></param>
     /// <returns></returns>
-    public virtual async Task<IReadOnlyList<TEntity>?> GetAllAsync(CancellationToken cancellationToken,
-                                                             Expression<Func<TEntity, bool>>? predicate,
-                                                             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy,
+    public virtual async Task<IReadOnlyList<TCacheEntity>?> GetAllAsync(CancellationToken cancellationToken,
+                                                             Expression<Func<TCacheEntity, bool>>? predicate,
+                                                             Func<IQueryable<TCacheEntity>, IOrderedQueryable<TCacheEntity>>? orderBy,
                                                              string? includeString,
                                                              bool disableTracking = true)
     {
@@ -139,9 +137,9 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
         }
     }
 
-    public async Task<ResultDto<IReadOnlyList<TEntity>?>> GetAllAsync(CancellationToken cancellationToken,
-                                                                Expression<Func<TEntity, bool>>? predicate = null,
-                                                                Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy =
+    public async Task<ResultDto<IReadOnlyList<TCacheEntity>?>> GetAllAsync(CancellationToken cancellationToken,
+                                                                Expression<Func<TCacheEntity, bool>>? predicate = null,
+                                                                Func<IQueryable<TCacheEntity>, IOrderedQueryable<TCacheEntity>>? orderBy =
                                                                     null,
                                                                 string? includeString = null,
                                                                 bool disableTracking = true, int pageNumber = 1,
@@ -159,10 +157,10 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
     /// <param name="includes"></param>
     /// <param name="disableTracking"></param>
     /// <returns></returns>
-    public virtual async Task<IReadOnlyList<TEntity>?> GetAllAsync(CancellationToken cancellationToken,
-                                                             Expression<Func<TEntity, bool>>? predicate,
-                                                             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy,
-                                                             List<Expression<Func<TEntity, object>>>? includes,
+    public virtual async Task<IReadOnlyList<TCacheEntity>?> GetAllAsync(CancellationToken cancellationToken,
+                                                             Expression<Func<TCacheEntity, bool>>? predicate,
+                                                             Func<IQueryable<TCacheEntity>, IOrderedQueryable<TCacheEntity>>? orderBy,
+                                                             List<Expression<Func<TCacheEntity, object>>>? includes,
                                                              bool disableTracking = true)
     {
         try
@@ -188,11 +186,11 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
         }
     }
 
-    public async Task<ResultDto<IReadOnlyList<TEntity>?>> GetAllAsync(CancellationToken cancellationToken,
-                                                                Expression<Func<TEntity, bool>>? predicate = null,
-                                                                Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy =
+    public async Task<ResultDto<IReadOnlyList<TCacheEntity>?>> GetAllAsync(CancellationToken cancellationToken,
+                                                                Expression<Func<TCacheEntity, bool>>? predicate = null,
+                                                                Func<IQueryable<TCacheEntity>, IOrderedQueryable<TCacheEntity>>? orderBy =
                                                                     null,
-                                                                List<Expression<Func<TEntity, object>>>? includes = null,
+                                                                List<Expression<Func<TCacheEntity, object>>>? includes = null,
                                                                 bool disableTracking = true, int pageNumber = 1,
                                                                 int pageSize = 10)
     {
@@ -205,7 +203,7 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
     /// <param name="cancellationToken"></param>
     /// <param name="predicate"></param>
     /// <returns></returns>
-    public virtual async Task<TEntity?> GetAsync(CancellationToken cancellationToken, Expression<Func<TEntity, bool>> predicate)
+    public virtual async Task<TCacheEntity?> GetAsync(CancellationToken cancellationToken, Expression<Func<TCacheEntity, bool>> predicate)
     {
         try
         {
@@ -228,10 +226,10 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
     /// <param name="includeString"></param>
     /// <param name="disableTracking"></param>
     /// <returns></returns>
-    public virtual async Task<TEntity?> GetAsync(CancellationToken cancellationToken,
-                                           Expression<Func<TEntity, bool>>? predicate = null,
+    public virtual async Task<TCacheEntity?> GetAsync(CancellationToken cancellationToken,
+                                           Expression<Func<TCacheEntity, bool>>? predicate = null,
                                            // ReSharper disable once MethodOverloadWithOptionalParameter
-                                           Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+                                           Func<IQueryable<TCacheEntity>, IOrderedQueryable<TCacheEntity>>? orderBy = null,
                                            string? includeString = null,
                                            bool disableTracking = true)
     {
@@ -266,10 +264,10 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
     /// <param name="includes"></param>
     /// <param name="disableTracking"></param>
     /// <returns></returns>
-    public virtual async Task<TEntity?> GetAsync(CancellationToken cancellationToken,
-                                           Expression<Func<TEntity, bool>>? predicate = null,
-                                           Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
-                                           List<Expression<Func<TEntity, object>>>? includes = null,
+    public virtual async Task<TCacheEntity?> GetAsync(CancellationToken cancellationToken,
+                                           Expression<Func<TCacheEntity, bool>>? predicate = null,
+                                           Func<IQueryable<TCacheEntity>, IOrderedQueryable<TCacheEntity>>? orderBy = null,
+                                           List<Expression<Func<TCacheEntity, object>>>? includes = null,
                                            bool disableTracking = true)
     {
         try
@@ -301,7 +299,7 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
     /// <param name="id"></param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    public async Task<TEntity?> GetByIdAsync(CancellationToken cancellationToken, TEntityKey id)
+    public async Task<TCacheEntity?> GetByIdAsync(CancellationToken cancellationToken, TEntityKey id)
     {
         return await _query.FindAsync(id, cancellationToken).ConfigureAwait(false);
     }
@@ -311,7 +309,7 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public virtual async Task<TEntity?> GetByIdAsync(TEntityKey id)
+    public virtual async Task<TCacheEntity?> GetByIdAsync(TEntityKey id)
     {
         try
         {
@@ -331,7 +329,7 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
     /// <param name="cancellationToken"></param>
     /// <param name="entity"></param>
     /// <returns></returns>
-    public virtual async Task<TEntityKey> AddAndGetIdAsync(CancellationToken cancellationToken, TEntity entity)
+    public virtual async Task<TEntityKey> AddAndGetIdAsync(CancellationToken cancellationToken, TCacheEntity entity)
     {
         try
         {
@@ -353,7 +351,7 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
     /// <param name="cancellationToken"></param>
     /// <param name="entity"></param>
     /// <returns></returns>
-    public virtual async Task<TEntity> AddAsync(CancellationToken cancellationToken, TEntity entity)
+    public virtual async Task<TCacheEntity> AddAsync(CancellationToken cancellationToken, TCacheEntity entity)
     {
         try
         {
@@ -375,7 +373,7 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
     /// <param name="entity"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public virtual async Task<bool> UpdateAsync(CancellationToken cancellationToken, TEntity entity)
+    public virtual async Task<bool> UpdateAsync(CancellationToken cancellationToken, TCacheEntity entity)
     {
         try
         {
@@ -392,7 +390,7 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
         }
     }
 
-    public async Task<bool> UpdateRangeAsync(CancellationToken cancellationToken, List<TEntity> entities)
+    public async Task<bool> UpdateRangeAsync(CancellationToken cancellationToken, List<TCacheEntity> entities)
     {
         throw new NotImplementedException();
     }
@@ -409,7 +407,7 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
         {
             //var entity = await GetByIdAsync(id);
 
-            var entity = new TEntity {Id = id};
+            var entity = new TCacheEntity { Id = id };
 
 
             //if (entity == null) return false;
@@ -427,7 +425,7 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
         }
     }
 
-    public async Task<bool> SoftDeleteAsync(CancellationToken cancellationToken, TEntity entity)
+    public async Task<bool> SoftDeleteAsync(CancellationToken cancellationToken, TCacheEntity entity)
     {
         throw new NotImplementedException();
     }
@@ -439,7 +437,7 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
     /// <param name="predicate"></param>
     /// <returns></returns>
     public virtual async Task<bool> GetAnyAsync(CancellationToken cancellationToken,
-                                                Expression<Func<TEntity, bool>> predicate)
+                                                Expression<Func<TCacheEntity, bool>> predicate)
     {
         try
         {
@@ -459,7 +457,7 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
     /// <param name="cancellationToken"></param>
     /// <param name="entity"></param>
     /// <returns></returns>
-    public virtual async Task<bool> DeleteAsync(CancellationToken cancellationToken, TEntity entity)
+    public virtual async Task<bool> DeleteAsync(CancellationToken cancellationToken, TCacheEntity entity)
     {
         try
         {
@@ -483,7 +481,7 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
     /// <param name="predicate"></param>
     /// <returns></returns>
     public virtual async Task<bool> DeleteAsync(CancellationToken cancellationToken,
-                                                Expression<Func<TEntity, bool>> predicate)
+                                                Expression<Func<TCacheEntity, bool>> predicate)
     {
         try
         {
@@ -504,7 +502,7 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
         }
     }
 
-    public async Task<bool> SoftDeleteAsync(CancellationToken cancellationToken, Expression<Func<TEntity, bool>> predicate)
+    public async Task<bool> SoftDeleteAsync(CancellationToken cancellationToken, Expression<Func<TCacheEntity, bool>> predicate)
     {
         throw new NotImplementedException();
     }
@@ -513,14 +511,14 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
     /// 
     /// </summary>
     /// <returns></returns>
-    public virtual FrozenSet<TEntity>? GetAll(int? pageNumber = null, int? pageSize = null)
+    public virtual FrozenSet<TCacheEntity>? GetAll(int? pageNumber = null, int? pageSize = null)
     {
         try
         {
             if (pageNumber == null || pageSize == null)
                 return _query.ToFrozenSet();
 
-            return _query.Skip(((int) pageNumber - 1) * (int) pageSize).Take((int) pageSize).ToFrozenSet();
+            return _query.Skip(((int)pageNumber - 1) * (int)pageSize).Take((int)pageSize).ToFrozenSet();
         }
         catch (Exception ex)
         {
@@ -537,7 +535,7 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
     /// <returns></returns>
-    public virtual FrozenSet<TEntity>? GetAll(Expression<Func<TEntity, bool>> predicate, int? pageNumber = null,
+    public virtual FrozenSet<TCacheEntity>? GetAll(Expression<Func<TCacheEntity, bool>> predicate, int? pageNumber = null,
                                         int? pageSize = null)
     {
         try
@@ -545,7 +543,7 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
             if (pageNumber == null || pageSize == null)
                 return _query.Where(predicate).ToFrozenSet();
 
-            return _query.Where(predicate).Skip(((int) pageNumber - 1) * (int) pageSize).Take((int) pageSize)
+            return _query.Where(predicate).Skip(((int)pageNumber - 1) * (int)pageSize).Take((int)pageSize)
                          .ToFrozenSet();
         }
         catch (Exception ex)
@@ -566,8 +564,8 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
     /// <returns></returns>
-    public virtual FrozenSet<TEntity>? GetAll(Expression<Func<TEntity, bool>>? predicate,
-                                        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+    public virtual FrozenSet<TCacheEntity>? GetAll(Expression<Func<TCacheEntity, bool>>? predicate,
+                                        Func<IQueryable<TCacheEntity>, IOrderedQueryable<TCacheEntity>>? orderBy = null,
                                         string? includeString = null,
                                         bool disableTracking = true, int? pageNumber = null, int? pageSize = null)
     {
@@ -589,9 +587,9 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
             }
 
             return orderBy != null
-                       ? orderBy(query).Skip(((int) pageNumber - 1) * (int) pageSize).Take((int) pageSize)
+                       ? orderBy(query).Skip(((int)pageNumber - 1) * (int)pageSize).Take((int)pageSize)
                                        .ToFrozenSet()
-                       : query.Skip(((int) pageNumber - 1) * (int) pageSize).Take((int) pageSize).ToFrozenSet();
+                       : query.Skip(((int)pageNumber - 1) * (int)pageSize).Take((int)pageSize).ToFrozenSet();
         }
         catch (Exception ex)
         {
@@ -611,9 +609,9 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
     /// <param name="pageNumber"></param>
     /// <param name="pageSize"></param>
     /// <returns></returns>
-    public virtual FrozenSet<TEntity>? GetAll(Expression<Func<TEntity, bool>>? predicate,
-                                        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy,
-                                        List<Expression<Func<TEntity, object>>>? includes, bool disableTracking = true,
+    public virtual FrozenSet<TCacheEntity>? GetAll(Expression<Func<TCacheEntity, bool>>? predicate,
+                                        Func<IQueryable<TCacheEntity>, IOrderedQueryable<TCacheEntity>>? orderBy,
+                                        List<Expression<Func<TCacheEntity, object>>>? includes, bool disableTracking = true,
                                         int? pageNumber = null, int? pageSize = null)
     {
         try
@@ -634,9 +632,9 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
             }
 
             return orderBy != null
-                       ? orderBy(query).Skip(((int) pageNumber - 1) * (int) pageSize).Take((int) pageSize)
+                       ? orderBy(query).Skip(((int)pageNumber - 1) * (int)pageSize).Take((int)pageSize)
                                        .ToFrozenSet()
-                       : query.Skip(((int) pageNumber - 1) * (int) pageSize).Take((int) pageSize).ToFrozenSet();
+                       : query.Skip(((int)pageNumber - 1) * (int)pageSize).Take((int)pageSize).ToFrozenSet();
         }
         catch (Exception ex)
         {
@@ -651,7 +649,7 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
     /// </summary>
     /// <param name="predicate"></param>
     /// <returns></returns>
-    public virtual TEntity? Get(Expression<Func<TEntity, bool>> predicate)
+    public virtual TCacheEntity? Get(Expression<Func<TCacheEntity, bool>> predicate)
     {
         try
         {
@@ -673,8 +671,8 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
     /// <param name="includeString"></param>
     /// <param name="disableTracking"></param>
     /// <returns></returns>
-    public virtual TEntity? Get(Expression<Func<TEntity, bool>>? predicate = null,
-                          Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null, string? includeString = null,
+    public virtual TCacheEntity? Get(Expression<Func<TCacheEntity, bool>>? predicate = null,
+                          Func<IQueryable<TCacheEntity>, IOrderedQueryable<TCacheEntity>>? orderBy = null, string? includeString = null,
                           bool disableTracking = true)
     {
         try
@@ -705,9 +703,9 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
     /// <param name="includes"></param>
     /// <param name="disableTracking"></param>
     /// <returns></returns>
-    public virtual TEntity? Get(Expression<Func<TEntity, bool>>? predicate = null,
-                          Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
-                          List<Expression<Func<TEntity, object>>>? includes = null, bool disableTracking = true)
+    public virtual TCacheEntity? Get(Expression<Func<TCacheEntity, bool>>? predicate = null,
+                          Func<IQueryable<TCacheEntity>, IOrderedQueryable<TCacheEntity>>? orderBy = null,
+                          List<Expression<Func<TCacheEntity, object>>>? includes = null, bool disableTracking = true)
     {
         try
         {
@@ -734,7 +732,7 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    public virtual TEntity? GetById(TEntityKey id)
+    public virtual TCacheEntity? GetById(TEntityKey id)
     {
         try
         {
@@ -753,7 +751,7 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
     /// </summary>
     /// <param name="entity"></param>
     /// <returns></returns>
-    public virtual TEntity Add(TEntity entity)
+    public virtual TCacheEntity Add(TCacheEntity entity)
     {
         try
         {
@@ -774,7 +772,7 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
     /// </summary>
     /// <param name="entity"></param>
     /// <returns></returns>
-    public virtual TEntityKey AddAndGetId(TEntity entity)
+    public virtual TEntityKey AddAndGetId(TCacheEntity entity)
     {
         try
         {
@@ -795,7 +793,7 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
     /// </summary>
     /// <param name="entity"></param>
     /// <returns></returns>
-    public virtual bool Update(TEntity entity)
+    public virtual bool Update(TCacheEntity entity)
     {
         try
         {
@@ -812,7 +810,7 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
         }
     }
 
-    public bool UpdateRange(List<TEntity> entities)
+    public bool UpdateRange(List<TCacheEntity> entities)
     {
         throw new NotImplementedException();
     }
@@ -828,7 +826,7 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
         {
             //var entity = await GetByIdAsync(id);
 
-            var entity = new TEntity {Id = id};
+            var entity = new TCacheEntity { Id = id };
 
             //if (entity == null) return false;
 
@@ -845,7 +843,7 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
         }
     }
 
-    public bool SoftDelete(Expression<Func<TEntity, bool>> predicate)
+    public bool SoftDelete(Expression<Func<TCacheEntity, bool>> predicate)
     {
         throw new NotImplementedException();
     }
@@ -855,7 +853,7 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
     /// </summary>
     /// <param name="predicate"></param>
     /// <returns></returns>
-    public virtual bool GetAny(Expression<Func<TEntity, bool>> predicate)
+    public virtual bool GetAny(Expression<Func<TCacheEntity, bool>> predicate)
     {
         try
         {
@@ -874,7 +872,7 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
     /// </summary>
     /// <param name="entity"></param>
     /// <returns></returns>
-    public virtual bool Delete(TEntity entity)
+    public virtual bool Delete(TCacheEntity entity)
     {
         try
         {
@@ -891,7 +889,7 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
         }
     }
 
-    public virtual bool Delete(Expression<Func<TEntity, bool>> predicate)
+    public virtual bool Delete(Expression<Func<TCacheEntity, bool>> predicate)
     {
         try
         {
@@ -908,7 +906,7 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
         }
     }
 
-    public bool SoftDelete(TEntity entity)
+    public bool SoftDelete(TCacheEntity entity)
     {
         throw new NotImplementedException();
     }
@@ -917,12 +915,12 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
 
     #region Async Method
 
-    public virtual ValueTask<TEntity?> GetByIdAsync(CancellationToken cancellationToken, params TEntityKey[] ids)
+    public virtual ValueTask<TCacheEntity?> GetByIdAsync(CancellationToken cancellationToken, params TEntityKey[] ids)
     {
         return Entities.FindAsync(ids, cancellationToken);
     }
 
-    public virtual async Task<IEnumerable<TEntity>> AddRangeAsync(IEnumerable<TEntity> entities,
+    public virtual async Task<IEnumerable<TCacheEntity>> AddRangeAsync(IEnumerable<TCacheEntity> entities,
                                                             CancellationToken cancellationToken,
                                                             bool saveNow = true)
     {
@@ -943,7 +941,7 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
         }
     }
 
-    public virtual async Task<bool> UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken,
+    public virtual async Task<bool> UpdateRangeAsync(IEnumerable<TCacheEntity> entities, CancellationToken cancellationToken,
                                                      bool saveNow = true)
     {
         try
@@ -968,14 +966,14 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
 
     #region Attach & Detach
 
-    public virtual void Detach(CancellationToken cancellationToken, TEntity entity)
+    public virtual void Detach(CancellationToken cancellationToken, TCacheEntity entity)
     {
         Assert.NotNull(entity, nameof(entity));
         var entry = DbContext.Entry(entity);
         entry.State = EntityState.Detached;
     }
 
-    public virtual void Attach(TEntity entity)
+    public virtual void Attach(TCacheEntity entity)
     {
         Assert.NotNull(entity, nameof(entity));
         if (DbContext.Entry(entity).State == EntityState.Detached)
@@ -986,8 +984,8 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
 
     #region Explicit Loading
 
-    public virtual async Task LoadCollectionAsync<TProperty>(TEntity entity,
-                                                             Expression<Func<TEntity, IEnumerable<TProperty>>>
+    public virtual async Task LoadCollectionAsync<TProperty>(TCacheEntity entity,
+                                                             Expression<Func<TCacheEntity, IEnumerable<TProperty>>>
                                                                  collectionProperty,
                                                              CancellationToken cancellationToken)
         where TProperty : class
@@ -999,8 +997,8 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
             await collection.LoadAsync(cancellationToken).ConfigureAwait(false);
     }
 
-    public virtual void LoadCollection<TProperty>(TEntity entity,
-                                                  Expression<Func<TEntity, IEnumerable<TProperty>>> collectionProperty)
+    public virtual void LoadCollection<TProperty>(TCacheEntity entity,
+                                                  Expression<Func<TCacheEntity, IEnumerable<TProperty>>> collectionProperty)
         where TProperty : class
     {
         Attach(entity);
@@ -1009,8 +1007,8 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
             collection.Load();
     }
 
-    public virtual async Task LoadReferenceAsync<TProperty>(TEntity entity,
-                                                            Expression<Func<TEntity, TProperty>> referenceProperty,
+    public virtual async Task LoadReferenceAsync<TProperty>(TCacheEntity entity,
+                                                            Expression<Func<TCacheEntity, TProperty>> referenceProperty,
                                                             CancellationToken cancellationToken)
         where TProperty : class
     {
@@ -1020,7 +1018,7 @@ public class Repository<TEntity, TEntityKey> : IRepository<TEntity, TEntityKey>
             await reference.LoadAsync(cancellationToken).ConfigureAwait(false);
     }
 
-    public virtual void LoadReference<TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> referenceProperty)
+    public virtual void LoadReference<TProperty>(TCacheEntity entity, Expression<Func<TCacheEntity, TProperty>> referenceProperty)
         where TProperty : class
     {
         Attach(entity);

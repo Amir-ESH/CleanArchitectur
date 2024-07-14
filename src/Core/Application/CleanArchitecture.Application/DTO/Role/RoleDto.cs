@@ -13,5 +13,5 @@ public class RoleDto : BaseDto<int>
     [DisplayName("Is Active?")]
     public bool IsActive { get; set; }
 
-    public ICollection<Domain.Entities.User> Users { get; set; } = new List<Domain.Entities.User>();
+    public ICollection<Domain.Entities.Users.User> Users { get; set; } = new List<Domain.Entities.Users.User>();
 }

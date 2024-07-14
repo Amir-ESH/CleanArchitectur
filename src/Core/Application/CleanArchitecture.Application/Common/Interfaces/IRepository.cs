@@ -7,90 +7,90 @@ using CleanArchitecture.Domain.Commons;
 
 namespace CleanArchitecture.Application.Common.Interfaces;
 
-public interface IRepository<T, TEntityKey> where T : BaseEntity<TEntityKey>, IEntity
+public interface IRepository<TEntity, TEntityKey>
+    where TEntity : BaseEntity<TEntityKey>, IEntity
 {
-    DbSet<T> Entities { get; }
-    IQueryable<T> Table { get; }
-    IQueryable<T> TableNoTracking { get; }
-    ValueTask<T?> GetByIdAsync(CancellationToken cancellationToken, params TEntityKey[] ids);
-    Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken, bool saveNow = true);
-    Task<bool> UpdateRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken, bool saveNow = true);
+    DbSet<TEntity> Entities { get; }
+    IQueryable<TEntity> Table { get; }
+    ValueTask<TEntity?> GetByIdAsync(CancellationToken cancellationToken, params TEntityKey[] ids);
+    Task<IEnumerable<TEntity>> AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken, bool saveNow = true);
+    Task<bool> UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken, bool saveNow = true);
     Task ExecuteSqlQueryWithoutResultAsync(CancellationToken cancellationToken, string query);
-    Task<IReadOnlyList<T>?> GetAllAsync(CancellationToken cancellationToken);
-    Task<ResultDto<IReadOnlyList<T>?>> GetAllAsync(CancellationToken cancellationToken, int pageNumber = 1, int pageSize = 10);
-    Task<IReadOnlyList<T>?> GetAllAsync(CancellationToken cancellationToken, Expression<Func<T, bool>> predicate);
-    Task<ResultDto<IReadOnlyList<T>?>> GetAllAsync(CancellationToken cancellationToken, Expression<Func<T, bool>> predicate,
+    Task<IReadOnlyList<TEntity>?> GetAllAsync(CancellationToken cancellationToken);
+    Task<ResultDto<IReadOnlyList<TEntity>?>> GetAllAsync(CancellationToken cancellationToken, int pageNumber = 1, int pageSize = 10);
+    Task<IReadOnlyList<TEntity>?> GetAllAsync(CancellationToken cancellationToken, Expression<Func<TEntity, bool>> predicate);
+    Task<ResultDto<IReadOnlyList<TEntity>?>> GetAllAsync(CancellationToken cancellationToken, Expression<Func<TEntity, bool>> predicate,
                                                    int pageNumber = 1, int pageSize = 10);
-    Task<IReadOnlyList<T>?> GetAllAsync(CancellationToken cancellationToken, Expression<Func<T, bool>>? predicate = null,
-                                        Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
+    Task<IReadOnlyList<TEntity>?> GetAllAsync(CancellationToken cancellationToken, Expression<Func<TEntity, bool>>? predicate = null,
+                                        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
                                         string? includeString = null,
                                         bool disableTracking = true);
-    Task<ResultDto<IReadOnlyList<T>?>> GetAllAsync(CancellationToken cancellationToken, Expression<Func<T, bool>>? predicate = null,
-                                                   Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
+    Task<ResultDto<IReadOnlyList<TEntity>?>> GetAllAsync(CancellationToken cancellationToken, Expression<Func<TEntity, bool>>? predicate = null,
+                                                   Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
                                                    string? includeString = null,
                                                    bool disableTracking = true, int pageNumber = 1, int pageSize = 10);
-    Task<IReadOnlyList<T>?> GetAllAsync(CancellationToken cancellationToken, Expression<Func<T, bool>>? predicate = null,
-                                        Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
-                                        List<Expression<Func<T, object>>>? includes = null,
+    Task<IReadOnlyList<TEntity>?> GetAllAsync(CancellationToken cancellationToken, Expression<Func<TEntity, bool>>? predicate = null,
+                                        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+                                        List<Expression<Func<TEntity, object>>>? includes = null,
                                         bool disableTracking = true);
 
-    Task<ResultDto<IReadOnlyList<T>?>> GetAllAsync(CancellationToken cancellationToken, Expression<Func<T, bool>>? predicate = null,
-                                                  Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
-                                                  List<Expression<Func<T, object>>>? includes = null,
+    Task<ResultDto<IReadOnlyList<TEntity>?>> GetAllAsync(CancellationToken cancellationToken, Expression<Func<TEntity, bool>>? predicate = null,
+                                                  Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+                                                  List<Expression<Func<TEntity, object>>>? includes = null,
                                                   bool disableTracking = true, int pageNumber = 1, int pageSize = 10);
-    Task<T?> GetAsync(CancellationToken cancellationToken, Expression<Func<T, bool>> predicate);
-    Task<T?> GetAsync(CancellationToken cancellationToken, Expression<Func<T, bool>>? predicate = null,
-                      Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
+    Task<TEntity?> GetAsync(CancellationToken cancellationToken, Expression<Func<TEntity, bool>> predicate);
+    Task<TEntity?> GetAsync(CancellationToken cancellationToken, Expression<Func<TEntity, bool>>? predicate = null,
+                      Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
                       string? includeString = null,
                       bool disableTracking = true);
-    Task<T?> GetAsync(CancellationToken cancellationToken, Expression<Func<T, bool>>? predicate = null,
-                      Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
-                      List<Expression<Func<T, object>>>? includes = null,
+    Task<TEntity?> GetAsync(CancellationToken cancellationToken, Expression<Func<TEntity, bool>>? predicate = null,
+                      Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+                      List<Expression<Func<TEntity, object>>>? includes = null,
                       bool disableTracking = true);
-    Task<T?> GetByIdAsync(CancellationToken cancellationToken, TEntityKey id);
-    Task<T?> GetByIdAsync(TEntityKey id);
-    Task<T> AddAsync(CancellationToken cancellationToken, T entity);
-    Task<TEntityKey> AddAndGetIdAsync(CancellationToken cancellationToken, T entity);
-    Task<bool> UpdateAsync(CancellationToken cancellationToken, T entity);
-    Task<bool> UpdateRangeAsync(CancellationToken cancellationToken, List<T> entities);
-    Task<bool> DeleteAsync(CancellationToken cancellationToken, T entity);
-    Task<bool> DeleteAsync(CancellationToken cancellationToken, Expression<Func<T, bool>> predicate);
-    Task<bool> GetAnyAsync(CancellationToken cancellationToken, Expression<Func<T, bool>> predicate);
-    FrozenSet<T>? GetAll(int? pageNumber = null, int? pageSize = null);
-    FrozenSet<T>? GetAll(Expression<Func<T, bool>> predicate, int? pageNumber = null, int? pageSize = null);
-    FrozenSet<T>? GetAll(Expression<Func<T, bool>>? predicate = null,
-                         Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
+    Task<TEntity?> GetByIdAsync(CancellationToken cancellationToken, TEntityKey id);
+    Task<TEntity?> GetByIdAsync(TEntityKey id);
+    Task<TEntity> AddAsync(CancellationToken cancellationToken, TEntity entity);
+    Task<TEntityKey> AddAndGetIdAsync(CancellationToken cancellationToken, TEntity entity);
+    Task<bool> UpdateAsync(CancellationToken cancellationToken, TEntity entity);
+    Task<bool> UpdateRangeAsync(CancellationToken cancellationToken, List<TEntity> entities);
+    Task<bool> DeleteAsync(CancellationToken cancellationToken, TEntity entity);
+    Task<bool> DeleteAsync(CancellationToken cancellationToken, Expression<Func<TEntity, bool>> predicate);
+    Task<bool> GetAnyAsync(CancellationToken cancellationToken, Expression<Func<TEntity, bool>> predicate);
+    FrozenSet<TEntity>? GetAll(int? pageNumber = null, int? pageSize = null);
+    FrozenSet<TEntity>? GetAll(Expression<Func<TEntity, bool>> predicate, int? pageNumber = null, int? pageSize = null);
+    FrozenSet<TEntity>? GetAll(Expression<Func<TEntity, bool>>? predicate = null,
+                         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
                          string? includeString = null,
                          bool disableTracking = true, int? pageNumber = null, int? pageSize = null);
-    FrozenSet<T>? GetAll(Expression<Func<T, bool>>? predicate = null,
-                         Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
-                         List<Expression<Func<T, object>>>? includes = null,
+    FrozenSet<TEntity>? GetAll(Expression<Func<TEntity, bool>>? predicate = null,
+                         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+                         List<Expression<Func<TEntity, object>>>? includes = null,
                          bool disableTracking = true, int? pageNumber = null, int? pageSize = null);
-    T? Get(Expression<Func<T, bool>> predicate);
-    T? Get(Expression<Func<T, bool>>? predicate = null,
-           Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
+    TEntity? Get(Expression<Func<TEntity, bool>> predicate);
+    TEntity? Get(Expression<Func<TEntity, bool>>? predicate = null,
+           Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
            string? includeString = null,
            bool disableTracking = true);
-    T? Get(Expression<Func<T, bool>>? predicate = null,
-           Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
-           List<Expression<Func<T, object>>>? includes = null,
+    TEntity? Get(Expression<Func<TEntity, bool>>? predicate = null,
+           Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
+           List<Expression<Func<TEntity, object>>>? includes = null,
            bool disableTracking = true);
-    T? GetById(TEntityKey id);
-    T Add(T entity);
-    TEntityKey AddAndGetId(T entity);
-    bool Update(T entity);
-    bool UpdateRange(List<T> entities);
-    bool Delete(T entity);
-    bool Delete(Expression<Func<T, bool>> predicate);
-    bool GetAny(Expression<Func<T, bool>> predicate);
-    Task LoadCollectionAsync<TProperty>(T entity,
-                                        Expression<Func<T, IEnumerable<TProperty>>> collectionProperty, CancellationToken cancellationToken)
+    TEntity? GetById(TEntityKey id);
+    TEntity Add(TEntity entity);
+    TEntityKey AddAndGetId(TEntity entity);
+    bool Update(TEntity entity);
+    bool UpdateRange(List<TEntity> entities);
+    bool Delete(TEntity entity);
+    bool Delete(Expression<Func<TEntity, bool>> predicate);
+    bool GetAny(Expression<Func<TEntity, bool>> predicate);
+    Task LoadCollectionAsync<TProperty>(TEntity entity,
+                                        Expression<Func<TEntity, IEnumerable<TProperty>>> collectionProperty, CancellationToken cancellationToken)
         where TProperty : class;
-    void LoadCollection<TProperty>(T entity, Expression<Func<T, IEnumerable<TProperty>>> collectionProperty)
+    void LoadCollection<TProperty>(TEntity entity, Expression<Func<TEntity, IEnumerable<TProperty>>> collectionProperty)
         where TProperty : class;
-    Task LoadReferenceAsync<TProperty>(T entity, Expression<Func<T, TProperty>> referenceProperty,
+    Task LoadReferenceAsync<TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> referenceProperty,
                                        CancellationToken cancellationToken)
         where TProperty : class;
-    void LoadReference<TProperty>(T entity, Expression<Func<T, TProperty>> referenceProperty)
+    void LoadReference<TProperty>(TEntity entity, Expression<Func<TEntity, TProperty>> referenceProperty)
         where TProperty : class;
 }

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Domain.Commons;
 
-public abstract class BaseAuditableEntity<TKey> : BaseEntity<TKey>
+public abstract class CacheBaseAuditableEntity<TKey> : CacheBaseEntity<TKey>
 {
     /// <summary>
     /// Created Date Time

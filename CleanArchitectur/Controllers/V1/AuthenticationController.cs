@@ -140,7 +140,7 @@ public class AuthenticationController : ControllerBase
 
         try
         {
-            result = await _mediator.Send(new GetUserByEmailAddressRequest(request.Email), cancellationToken);
+            result = await _mediator.Send(new GetUserByEmailAddressQuery(request.Email), cancellationToken);
 
             if (result.IsSuccess)
             {
