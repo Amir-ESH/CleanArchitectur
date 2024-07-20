@@ -25,10 +25,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\CleanArchitectur\CleanArchitecture.WebApi.csproj" />
-    <ProjectReference Include="..\..\src\CleanArchitecture.Infrastructure\CleanArchitecture.Infrastructure.csproj" />
     <ProjectReference Include="..\..\src\Core\Application\CleanArchitecture.Application\CleanArchitecture.Application.csproj" />
     <ProjectReference Include="..\..\src\Core\Domain\CleanArchitecture.Domain\CleanArchitecture.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Infrastructure\CleanArchitecture.Infrastructure\CleanArchitecture.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\Presentation\API\CleanArchitecture.WebApi\CleanArchitecture.WebApi.csproj" />
   </ItemGroup>
 
 </Project>
