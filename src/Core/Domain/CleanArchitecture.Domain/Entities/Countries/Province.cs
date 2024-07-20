@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using CleanArchitecture.Domain.Commons;
-using CleanArchitecture.Domain.Entities.Customers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -25,6 +24,8 @@ public class Province : BaseAuditableEntity<long>
 
     [ForeignKey(nameof(CountryId))]
     public virtual Country Country { get; set; } = default!;
+
+    public virtual ICollection<City> Cities { get; set; } = default!;
 
     #endregion
 }
