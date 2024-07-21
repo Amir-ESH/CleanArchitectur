@@ -12,5 +12,8 @@ public static class ApplicationDbContextInitialiser
 
         if (serviceScope.ServiceProvider.GetService<DataContext>() is { } context)
             context.Database.Migrate();
+
+        //if (serviceScope.ServiceProvider.GetService<DataCacheContext>() is { } cacheContext)
+        //    cacheContext.Database.Migrate();
     }
 }

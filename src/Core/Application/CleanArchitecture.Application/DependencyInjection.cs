@@ -195,8 +195,7 @@ public static class DependencyInjection
     private static void AddAuthenticationExtension(this WebApplicationBuilder builder)
     {
         builder.Services.AddAuthentication("Bearer")
-               .AddJwtBearer(
-                             option =>
+               .AddJwtBearer(option =>
                              {
                                  option.TokenValidationParameters = new TokenValidationParameters
                                  {
@@ -210,10 +209,9 @@ public static class DependencyInjection
                                          builder.Configuration
                                                 .GetSection("Authentication:Audience").Value,
                                      IssuerSigningKey = new SymmetricSecurityKey(
-                                      Encoding.UTF32.GetBytes(
-                                                              builder.Configuration.GetSection(
-                                                               "Authentication:SecretForKey").Value!
-                                                            + "Vd4bfjbRta7z4hGQfM4ACQpbq2FtEKUy3cIB2ecMcGHfBarbQwfdxjQjIbzhRGB"))
+                                          Encoding.UTF32.GetBytes(builder.Configuration.GetSection(
+                                                                       "Authentication:SecretForKey").Value!
+                                                                + "Vd4bfjbRta7z4hGQfM4ACQpbq2FtEKUy3cIB2ecMcGHfBarbQwfdxjQjIbzhRGB"))
                                  };
                              });
     }

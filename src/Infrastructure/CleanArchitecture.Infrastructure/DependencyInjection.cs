@@ -17,31 +17,17 @@ public static class DependencyInjection
         var maxRetryCount = configuration.GetSection("Database:sqlServerOptionsAction:maxRetryCount").Value ?? "5";
         var maxRetryDelay = configuration.GetSection("Database:sqlServerOptionsAction:maxRetryDelay").Value ?? "20";
 
-        services.AddDbContext<DataContext>(
-                                                options =>
-                                                {
-                                                    options.UseSqlServer(GetConnectionString(configuration),
-                                                                         sqlServerOptionsAction: sqlOptions =>
-                                                                         {
-                                                                             sqlOptions.EnableRetryOnFailure(
-                                                                              maxRetryCount: Convert.ToInt32(maxRetryCount),
-                                                                              maxRetryDelay: TimeSpan.FromSeconds(Convert.ToInt32(maxRetryDelay)),
-                                                                              errorNumbersToAdd: null);
-                                                                         });
-                                                });
-
-        services.AddDbContext<DataCacheContext>(
-                                                options =>
-                                                {
-                                                    options.UseSqlServer(GetCacheConnectionString(configuration),
-                                                                         sqlServerOptionsAction: sqlOptions =>
-                                                                         {
-                                                                             sqlOptions.EnableRetryOnFailure(
-                                                                              maxRetryCount: Convert.ToInt32(maxRetryCount),
-                                                                              maxRetryDelay: TimeSpan.FromSeconds(Convert.ToInt32(maxRetryDelay)),
-                                                                              errorNumbersToAdd: null);
-                                                                         });
-                                                });
+        services.AddDbContext<DataContext>(options =>
+                                           {
+                                               options.UseSqlServer(GetConnectionString(configuration),
+                                                                    sqlServerOptionsAction: sqlOptions =>
+                                                                        {
+                                                                            sqlOptions.EnableRetryOnFailure(
+                                                                                 maxRetryCount: Convert.ToInt32(maxRetryCount),
+                                                                                 maxRetryDelay: TimeSpan.FromSeconds(Convert.ToInt32(maxRetryDelay)),
+                                                                                 errorNumbersToAdd: null);
+                                                                        });
+                                           });
 
         services.AddRepositoryLifeTime();
         
@@ -66,7 +52,6 @@ public static class DependencyInjection
         services.AddSingleton(TimeProvider.System);
 
         services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
-        services.AddScoped(typeof(ICacheRepository<,>), typeof(CacheRepository<,>));
 
         return services;
     }
@@ -92,34 +77,6 @@ public static class DependencyInjection
             configuration.GetSection("Database:ConnectionString:Trusted_Connection").Value ?? "False";
         var multipleActiveResultSets =
             configuration.GetSection("Database:ConnectionString:MultipleActiveResultSets").Value ?? "True";
-
-        return $"Data Source = {dataSource}; Initial Catalog = {initialCatalog}; User Id = {userId}; " +
-            $"Password={password}; Integrated Security = {integratedSecurity}; Encrypt = {encrypt}; " +
-            $"TrustServerCertificate = {trustServerCertificate}; Trusted_Connection = {trustedConnection}; " +
-            $"MultipleActiveResultSets = {multipleActiveResultSets};";
-    }
-
-    /// <summary>
-    /// Get Cache Connection String Infos from appsettings.json
-    /// </summary>
-    /// <param name="configuration">IConfiguration Service</param>
-    /// <returns></returns>
-    private static string GetCacheConnectionString(IConfiguration configuration)
-    {
-        var dataSource = configuration.GetSection("Database:CacheConnectionString:DataSource").Value ?? ".\\MSSQLSERVER2017";
-        var initialCatalog = configuration.GetSection("Database:CacheConnectionString:InitialCatalog").Value
-                          ?? "CacheCleanArchitecture";
-        var userId = configuration.GetSection("Database:CacheConnectionString:UserId").Value ?? "sa_test";
-        var password = configuration.GetSection("Database:CacheConnectionString:Password").Value ?? "P4ssw0rd!";
-        var integratedSecurity =
-            configuration.GetSection("Database:CacheConnectionString:IntegratedSecurity").Value ?? "True";
-        var encrypt = configuration.GetSection("Database:CacheConnectionString:Encrypt").Value ?? "True";
-        var trustServerCertificate =
-            configuration.GetSection("Database:CacheConnectionString:TrustServerCertificate").Value ?? "True";
-        var trustedConnection =
-            configuration.GetSection("Database:CacheConnectionString:Trusted_Connection").Value ?? "False";
-        var multipleActiveResultSets =
-            configuration.GetSection("Database:CacheConnectionString:MultipleActiveResultSets").Value ?? "True";
 
         return $"Data Source = {dataSource}; Initial Catalog = {initialCatalog}; User Id = {userId}; " +
             $"Password={password}; Integrated Security = {integratedSecurity}; Encrypt = {encrypt}; " +

@@ -78,7 +78,7 @@ namespace CleanArchitecture.Infrastructure.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("Banks");
+                    b.ToTable("Banks", (string)null);
                 });
 
             modelBuilder.Entity("CleanArchitecture.Domain.Entities.Countries.City", b =>
@@ -139,7 +139,7 @@ namespace CleanArchitecture.Infrastructure.Migrations
 
                     b.HasIndex("ProvinceId");
 
-                    b.ToTable("Cities");
+                    b.ToTable("Cities", (string)null);
                 });
 
             modelBuilder.Entity("CleanArchitecture.Domain.Entities.Countries.Country", b =>
@@ -195,7 +195,7 @@ namespace CleanArchitecture.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries");
+                    b.ToTable("Countries", (string)null);
                 });
 
             modelBuilder.Entity("CleanArchitecture.Domain.Entities.Countries.Province", b =>
@@ -256,7 +256,7 @@ namespace CleanArchitecture.Infrastructure.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("Provinces");
+                    b.ToTable("Provinces", (string)null);
                 });
 
             modelBuilder.Entity("CleanArchitecture.Domain.Entities.Customers.BankAccount", b =>
@@ -314,7 +314,7 @@ namespace CleanArchitecture.Infrastructure.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("BankAccounts");
+                    b.ToTable("BankAccounts", (string)null);
                 });
 
             modelBuilder.Entity("CleanArchitecture.Domain.Entities.Customers.Customer", b =>
@@ -406,7 +406,7 @@ namespace CleanArchitecture.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Customers");
+                    b.ToTable("Customers", (string)null);
                 });
 
             modelBuilder.Entity("CleanArchitecture.Domain.Entities.Customers.CustomerAddress", b =>
@@ -497,7 +497,7 @@ namespace CleanArchitecture.Infrastructure.Migrations
 
                     b.HasIndex("ProvinceId");
 
-                    b.ToTable("CustomerAddresses");
+                    b.ToTable("CustomerAddresses", (string)null);
                 });
 
             modelBuilder.Entity("CleanArchitecture.Domain.Entities.Customers.FamilyRelationship", b =>
@@ -525,7 +525,7 @@ namespace CleanArchitecture.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FamilyRelationships");
+                    b.ToTable("FamilyRelationships", (string)null);
                 });
 
             modelBuilder.Entity("CleanArchitecture.Domain.Entities.Customers.PhoneNumber", b =>
@@ -593,7 +593,7 @@ namespace CleanArchitecture.Infrastructure.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("PhoneNumbers");
+                    b.ToTable("PhoneNumbers", (string)null);
                 });
 
             modelBuilder.Entity("CleanArchitecture.Domain.Entities.Invoices.Invoice", b =>
@@ -655,7 +655,7 @@ namespace CleanArchitecture.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Invoices");
+                    b.ToTable("Invoices", (string)null);
                 });
 
             modelBuilder.Entity("CleanArchitecture.Domain.Entities.Invoices.InvoiceDetail", b =>
@@ -706,7 +706,7 @@ namespace CleanArchitecture.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("InvoiceDetails");
+                    b.ToTable("InvoiceDetails", (string)null);
                 });
 
             modelBuilder.Entity("CleanArchitecture.Domain.Entities.Invoices.InvoicePayment", b =>
@@ -751,7 +751,7 @@ namespace CleanArchitecture.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("InvoicePayments");
+                    b.ToTable("InvoicePayments", (string)null);
                 });
 
             modelBuilder.Entity("CleanArchitecture.Domain.Entities.Products.Product", b =>
@@ -830,7 +830,7 @@ namespace CleanArchitecture.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("CleanArchitecture.Domain.Entities.Roles.Role", b =>
@@ -884,7 +884,7 @@ namespace CleanArchitecture.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
                 });
 
             modelBuilder.Entity("CleanArchitecture.Domain.Entities.Users.User", b =>
@@ -963,7 +963,7 @@ namespace CleanArchitecture.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("CleanArchitecture.Domain.Entities.Users.UserRole", b =>
@@ -990,7 +990,7 @@ namespace CleanArchitecture.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserRoles");
+                    b.ToTable("UserRoles", (string)null);
                 });
 
             modelBuilder.Entity("CleanArchitecture.Domain.Entities.Wallets.Wallet", b =>
@@ -1043,7 +1043,7 @@ namespace CleanArchitecture.Infrastructure.Migrations
                     b.HasIndex("CustomerId")
                         .IsUnique();
 
-                    b.ToTable("Wallets");
+                    b.ToTable("Wallets", (string)null);
                 });
 
             modelBuilder.Entity("CleanArchitecture.Domain.Entities.Wallets.WalletTransaction", b =>
@@ -1098,7 +1098,7 @@ namespace CleanArchitecture.Infrastructure.Migrations
 
                     b.HasIndex("WalletId");
 
-                    b.ToTable("WalletTransactions");
+                    b.ToTable("WalletTransactions", (string)null);
                 });
 
             modelBuilder.Entity("CleanArchitecture.Domain.Entities.Banks.Bank", b =>
